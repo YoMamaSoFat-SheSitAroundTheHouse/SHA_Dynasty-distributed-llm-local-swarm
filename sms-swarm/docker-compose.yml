@@ -1,0 +1,33 @@
+version: "3.9"
+
+# SHA-Dynasty SMS Swarm — docker-compose
+# Runs on shitbox-jr. Starts the webhook receiver that bridges SMSGate → Ollama.
+#
+# Usage:
+#   cp .env.example .env   # fill in your values
+#   docker compose up -d
+
+services:
+  sms-bridge:
+    build:
+      context: ./scripts
+      dockerfile: Dockerfile
+    container_name: sha-sms-bridge
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5000:5000"   # Only bind to localhost — Tailscale handles external access
+    environment:
+      SMS_GATEWAY_URL:  ${SMS_GATEWAY_URL}
+      SMS_GATEWAY_USER: ${SMS_GATEWAY_USER}
+      SMS_GATEWAY_PASS: ${SMS_GATEWAY_PASS}
+      OLLAMA_URL:       ${OLLAMA_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL:     ${OLLAMA_MODEL:-qwen-swarm}
+      ALLOWED_SENDERS:  ${ALLOWED_SENDERS}
+      PORT:             5000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

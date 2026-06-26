@@ -1,0 +1,9 @@
+{
+  "comment": "Place this at .cursor/mcp.json on thetablet to connect Cursor to the swarm's Ollama MCP bridge",
+  "mcpServers": {
+    "sha-dynasty-swarm": {
+      "url": "http://100.SHITBOX_JR_TAILSCALE_IP:11435/mcp",
+      "comment": "ollama-mcp-bridge running on shitbox-jr — gives Cursor access to all MCP tools"
+    }
+  }
+}

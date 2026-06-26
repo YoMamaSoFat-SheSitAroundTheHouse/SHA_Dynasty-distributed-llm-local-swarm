@@ -1,0 +1,9 @@
+{
+  "comment": "Configure this in the SMSGate app on velvet/sha-dynasty: Settings → Webhooks → Add",
+  "event": "sms:received",
+  "url": "http://100.SHITBOX_JR_TAILSCALE_IP:5000/webhook/sms",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  }
+}
